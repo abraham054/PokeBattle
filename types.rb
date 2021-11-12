@@ -12,6 +12,8 @@ class Type
         end
         type_list
     end
+    # calculate_mult: Array -> Float
+    # calculates the damage multiplier considering how effective the attack should be
     def calculate_mult(types)
         for type in types do
             if @double.count(type) != 0

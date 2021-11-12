@@ -1,6 +1,8 @@
 require_relative 'pokeapi'
 
 class Battle
+    # fight: Array -> Pokemon
+    # Simulates a fight between two pokemons and returns the winner, the fastest one attacks first!
     def fight(match)
         faster = Array.new
         if match[0].get_speed > match[1].get_speed

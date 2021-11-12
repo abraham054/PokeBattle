@@ -10,14 +10,16 @@ class Pokemon
         @speed =    poke_data['stats'][5]['base_stat']
         @type = Type.new(type,damage_relations)
     end
+    # alive:  -> Bool
+    # check if a pokemon is alive
     def alive
         return @hp_left > 0
     end
+    # recieve_damage: Int Int -> _
+    # Makes the pokemon recieve damage, using a version of the original ecuation used in Pokemon games
     def receive_damage(dmg,multiplier)
-        #puts "dmg#{dmg} df #{@defense} mult #{multiplier}"
         dmg = (dmg * ((dmg * 1.0) / @defense )* 2.4 / 10 + 2) * multiplier * rand(85..100)/100
         dmg = dmg.round(1)
-        #puts "newdmg#{dmg}"
         @hp_left -= dmg
         @hp_left = @hp_left.round(1)
         puts "#{@name} received #{dmg} damage"
@@ -25,6 +27,8 @@ class Pokemon
             puts "#{@name} faded"
         end
     end
+    # attack: Pokemon -> _
+    # Makes one pokemon attack the other one
     def attack(pokemon)
         if alive()
             puts "#{@name} attacked #{pokemon.get_name}"
@@ -34,23 +38,18 @@ class Pokemon
             puts "#{@name} is too weak to attack now"
         end
     end
+    # refill_hp: -> _
+    # refills the original hp of a pokemon
     def refill_hp
         @hp_left = @hp
     end
+    # to_s: -> String
+    # overwrites the to_s method to print more useful information about the pokemon
     def to_s
         "#{@name} [#{@hp_left}/#{@hp}]"
     end
     def get_name
         @name
-    end
-    def get_hp
-        @hp
-    end
-    def get_attack
-        @attack
-    end
-    def get_defense
-        @defense
     end
     def get_speed
         @speed
