@@ -14,7 +14,7 @@ class Tournament
     # simulates the tournament, 8 pokemons only one winner
     def simulate
         while @fighters.length != 1
-            branches
+            bracket
             print "\nThe victory is for "
             for champion in @fighters do
                 print "#{champion.get_name} "
@@ -27,10 +27,10 @@ class Tournament
         puts "\nThe tournament's winner is #{@fighters[0].get_name}"
         puts "\n-------------------------------------------------"
     end
-    # branches:  -> _
-    # Simulates every battle in a branch and updates the fighters left,
+    # bracket:  -> _
+    # Simulates every battle in a bracket and updates the fighters left,
     # 4 fights first, 2 afterwards and then the grand final!
-    def branches
+    def bracket
         matches = divide
         winners = Array.new
         for match in matches do
@@ -39,14 +39,14 @@ class Tournament
         @fighters = winners
     end
     # divide:  -> Array
-    # divides an array of pokemon en branches of 1vs1, at first with 8 pokemons returns an array of 4 1vs1
+    # divides an array of pokemon in brackets of 1vs1, at first with 8 pokemons returns an array of 4 1vs1
     def divide
-        branch = Array.new
+        bracket = Array.new
         fighters = @fighters
         for i in 0..(fighters.length/2-1) do
-            branch.push([fighters[2*i],fighters[2*i+1]])
+            bracket.push([fighters[2*i],fighters[2*i+1]])
         end
-        branch
+        bracket
     end
 end
 
