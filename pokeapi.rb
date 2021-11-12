@@ -10,7 +10,6 @@ end
 class Preparation
     def initialize
         @contenders = Array.new
-        @pokedex = consume_api('https://pokeapi.co/api/v2/pokemon?limit=151')
     end
     def shuffle
         for i in 0..8 do
@@ -25,7 +24,3 @@ class Preparation
         @contenders
     end
 end
-
-prep = Preparation.new
-prep.shuffle
-puts prep.get_contenders
