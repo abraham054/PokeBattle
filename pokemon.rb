@@ -1,31 +1,26 @@
+require_relative 'types'
+
 class Pokemon
-    def initialize(poke_data)
-        data = clean_data(poke_data)
-        @name = data[0]
-        @hp = data[1]
-        @attack = data[2]
-        @defense = data[3]
-        @speed = data[4]
-    end
-    def clean_data(poke_data)
-        data = Array.new
-        data.push(poke_data['name'])
-        data.push(poke_data['stats'][0]['base_stat'])
-        data.push(poke_data['stats'][1]['base_stat'])
-        data.push(poke_data['stats'][2]['base_stat'])
-        data.push(poke_data['stats'][5]['base_stat'])
-        data
+    def initialize(poke_data,type,damage_relations)
+        @name =     poke_data['name']
+        @hp =       poke_data['stats'][0]['base_stat']
+        @hp_left =  poke_data['stats'][0]['base_stat'] 
+        @attack =   poke_data['stats'][1]['base_stat']
+        @defense =  poke_data['stats'][2]['base_stat']
+        @speed =    poke_data['stats'][5]['base_stat']
+        @type = Type.new(type,damage_relations)
     end
     def alive
-        return @hp > 0
+        return @hp_left > 0
     end
-    def receive_damage(dmg)
-        attack = dmg - @defense
-        if attack <= 0
-            attack = dmg / 3
-        end
-        @hp -= attack
-        puts "#{@name} received #{attack} damage"
+    def receive_damage(dmg,multiplier)
+        #puts "dmg#{dmg} df #{@defense} mult #{multiplier}"
+        dmg = (dmg * ((dmg * 1.0) / @defense )* 2.4 / 10 + 2) * multiplier * rand(85..100)/100
+        dmg = dmg.round(1)
+        #puts "newdmg#{dmg}"
+        @hp_left -= dmg
+        @hp_left = @hp_left.round(1)
+        puts "#{@name} received #{dmg} damage"
         if !alive
             puts "#{@name} faded"
         end
@@ -33,10 +28,17 @@ class Pokemon
     def attack(pokemon)
         if alive()
             puts "#{@name} attacked #{pokemon.get_name}"
-            pokemon.receive_damage(@attack)
+            multiplier = @type.calculate_mult(pokemon.get_type_name)
+            pokemon.receive_damage(@attack,multiplier)
         else
             puts "#{@name} is too weak to attack now"
         end
+    end
+    def refill_hp
+        @hp_left = @hp
+    end
+    def to_s
+        "#{@name} [#{@hp_left}/#{@hp}]"
     end
     def get_name
         @name
@@ -52,5 +54,8 @@ class Pokemon
     end
     def get_speed
         @speed
+    end
+    def get_type_name
+        @type.get_type_name
     end
 end

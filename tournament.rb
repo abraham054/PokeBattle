@@ -2,9 +2,10 @@ require_relative 'battle'
 
 class Tournament
     def initialize
-        puts "Let's begin the pokemon tournament!"
         prep = Preparation.new
         prep.shuffle
+        puts "Let's begin the pokemon tournament!\nPress enter to continue"
+        gets
         @fighters = prep.get_contenders
         @battler = Battle.new
     end
@@ -15,10 +16,13 @@ class Tournament
             for champion in @fighters do
                 print "#{champion.get_name} "
             end
-            puts "\nPress anything to continue"
+            puts "\n-------------------------------------------------"
+            puts "\nPress enter to continue"
             gets
         end
-        puts "The tournament's winner is #{@fighters[0].get_name}"
+        puts "-------------------------------------------------"
+        puts "\nThe tournament's winner is #{@fighters[0].get_name}"
+        puts "\n-------------------------------------------------"
     end
     def branches
         matches = divide
